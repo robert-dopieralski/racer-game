@@ -1,27 +1,32 @@
-body {
-    /* some fancy comment here and there */
+body{
+    background-color: white;
+    z-index: 5;
 }
-
 .gameBoard {
+    z-index: -10;
     margin: 3% auto;
     width: 840px;
     border: 3px inset gray;
     background-image: url('./background_highway.png');
     background-repeat: no-repeat;
     background-position: center;
-    min-height: 650px;
-    max-width: 1000px;
-    max-height: 800px;
+    height: 650px;
+}
+
+.gameBoard div {
+    width: 40px;
+    height: 80px;
 }
 
 .playerNode {
-    position: relative;
+    z-index: 4;
+    position: absolute;
     background-color: blue;
     border-radius: 20%;
 }
 
 .car {
-    position: relative;
+    position: absolute;
     margin: 0px;
     display: inline-block;
     box-sizing: border-box;

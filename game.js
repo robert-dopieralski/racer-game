@@ -29,12 +29,14 @@ let game = {
 
 }
 
+
+//NASA rocket launching center
 spawnPlayer()
 window.addEventListener('keydown', function (event) { move(event) })
 inter = setInterval(drawCar, 16)
 offRoadCheck = setInterval(checkIfOffTheRoad, 1500)
-carInterval = setInterval(spawnCar, 1000)
-moveCarsInterval = setInterval(moveCars, 40)
+// carInterval = setInterval(spawnCar, 1000)
+// moveCarsInterval = setInterval(moveCars, 30)
 
 function enemySpawnPosition() {
     let middle = (game.road.borderRight - game.road.borderLeft) / 2
