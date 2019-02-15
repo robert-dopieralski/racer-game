@@ -33,6 +33,7 @@ computeStartPositions()
 spawnPlayer()
 spawnCar()
 setInterval(pushCars, 6)
+setInterval(spawnCar, 750)
 window.addEventListener('keydown', function (event) { move(event) })
 
 function pushCars() {
