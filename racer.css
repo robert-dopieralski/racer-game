@@ -1,0 +1,16 @@
+body {
+    /* some fancy comment here and there */
+}
+
+.gameBoard {
+    margin: 0 auto;
+    width: 70%;
+    border: 3px inset gray;
+    background-color: lightgray;
+}
+
+.playerNode {
+    position: relative;
+    background-color: blue;
+    border-radius: 20%;
+}
