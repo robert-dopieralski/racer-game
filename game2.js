@@ -8,6 +8,7 @@ let game = {
         speed: 10,
         width: 40,
         height: 80,
+        score: 0,
     },
     road: {
         mapBorderLeft: 0,
@@ -18,20 +19,41 @@ let game = {
         borderRight: 0,
         borderTop: 0,
         borderBottom: 0,
+        width: 255,
     },
     cars: {
         spawnBorders: { x1: 0, x2: 0 },
-        speed: 10,
+        speed: 3,
+        amountOfClasses: 3,
     }
 }
 
 //NASA rocket launching center
 computeStartPositions()
 spawnPlayer()
-
+spawnCar()
+setInterval(pushCars, 6)
 window.addEventListener('keydown', function (event) { move(event) })
 
-function drawPlayer(){
+function pushCars() {
+    let cars = document.querySelectorAll('.car')
+    cars.forEach(car => { if (parseInt(car.style.top) <= game.road.borderBottom) { car.style.top = parseInt(car.style.top) + game.cars.speed + "px" } else { car.parentElement.removeChild(car); game.player.score++ } })
+}
+
+function spawnCar() {
+    let car = document.createElement('div')
+    let color = "car" + Math.round(Math.max(1, (Math.random() * game.cars.amountOfClasses)))
+    car.classList.add('car')
+    car.classList.add(color)
+    let lORr = Math.random()
+    if (lORr >= 0.5) { lORr = -1 } else { lORr = 1 }
+    let place = lORr * Math.random() * game.road.width
+    car.style.left = game.player.startPosition.x + place + "px"
+    car.style.top = game.road.borderTop + "px"
+    gameBoard.appendChild(car)
+}
+
+function drawPlayer() {
     player = document.querySelector('.playerNode')
     player.style.left = game.player.position.x + "px"
     player.style.top = game.player.position.y + "px"

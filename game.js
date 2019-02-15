@@ -41,12 +41,7 @@ offRoadCheck = setInterval(checkIfOffTheRoad, 1500)
 function enemySpawnPosition() {
     let middle = (game.road.borderRight - game.road.borderLeft) / 2
     let lORr = Math.random()
-    if (lORr >= 0.5) {
-        lORr = -1
-    }
-    else {
-        lORr = 1
-    }
+    if (lORr >= 0.5) { lORr = -1 } else { lORr = 1 }
     let dist = Math.random() * middle
     let spawnPos = middle + lORr * dist
     if (spawnPos >= game.road.borderRight || spawnPos <= game.road.borderLeft) {
