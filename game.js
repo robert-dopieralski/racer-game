@@ -1,9 +1,8 @@
 let gameBoard = document.querySelector('.gameBoard')
 gameBoard.style.height = window.innerHeight - 100 + "px"
 //tutaj trzeba poprawic to co jest wyzej
-gameBoard.style.padding = "20px"
 let player
-
+let inter
 
 let game = {
     player: {
@@ -14,32 +13,32 @@ let game = {
         borderTop: 0,
         borderLeft: 0,
         borderRight: 0,
-        xSpeed: 5,
-        ySpeed: 3,
+        xSpeed: 14,
+        ySpeed: 10,
     }
 }
 
 spawnPlayer()
 window.addEventListener('keydown', function (event) { move(event) })
+inter = setInterval(draw, 16)
 
-
+function draw() {
+    player.style.top = game.player.position.y + "px"
+    player.style.left = game.player.position.x + "px"
+}
 
 function move(input) {
     let key = input.key
-    if (key === "ArrowRight") {
-        //&& game.player.position.x < game.player.borderRight
+    if (key === "ArrowRight" && game.player.position.x < game.player.borderRight) {
         game.player.position.x += game.player.xSpeed
     }
-    if (key === "ArrowLeft") {
-        //&& game.player.position.x > game.player.borderLeft
+    if (key === "ArrowLeft" && game.player.position.x > game.player.borderLeft) {
         game.player.position.x -= game.player.xSpeed
     }
-    if (key === "ArrowUp") {
-        // && game.player.position.y < game.player.borderTop
+    if (key === "ArrowUp" && game.player.position.y > game.player.borderTop) {
         game.player.position.y -= game.player.ySpeed
     }
-    if (key === "ArrowDown") {
-        // && game.player.position.y > game.player.borderBottom
+    if (key === "ArrowDown" && game.player.position.y < game.player.borderBottom) {
         game.player.position.y += game.player.ySpeed
     }
     // console.log(input.key)
@@ -50,7 +49,9 @@ function setInitialSettingsAndBorders() {
     game.player.position.y = parseInt(player.style.top)
     game.player.position.x = parseInt(player.style.left)
     game.player.borderBottom = game.player.position.y
-    game.player.borderTop = parseInt(player.style.height)
+    game.player.borderTop = (game.player.playerSize.x*1.2 - game.player.playerSize.x)
+    game.player.borderLeft = (game.player.playerSize.x*1.2 - game.player.playerSize.x)
+    game.player.borderRight = gameBoard.clientWidth - game.player.playerSize.x*1.2
 }
 
 function spawnPlayer() {
