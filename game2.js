@@ -28,6 +28,7 @@ let game = {
         spawnBorders: { x1: 0, x2: 0 },
         speed: 3,
         amountOfClasses: 3,
+        maxCarsOnMap: 10,
     }
 }
 
@@ -78,7 +79,7 @@ function pushCars() {
 
 function spawnCar() {
     let cars = document.querySelectorAll('.car')
-    if (cars.length < 1) {
+    if (cars.length < game.cars.maxCarsOnMap) {
         let car = document.createElement('div')
         let color = "car" + Math.round(Math.max(1, (Math.random() * game.cars.amountOfClasses)))
         car.classList.add('car')
