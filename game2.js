@@ -46,8 +46,8 @@ function detectCollision() {
         let positionY = parseInt(car.style.top)
         console.log(positionX + " " + positionY)
         console.log(game.player.position)
-        console.log((positionX - game.player.position.x - game.player.width / 2) + " < " + game.player.width)
-        if ((positionX - game.player.position.x - game.player.width / 2) < game.player.width && positionY >= (game.player.position.y + game.player.height)) { gameOver() }
+        console.log(Math.abs(positionX - game.player.position.x) + " < " + game.player.width)
+        if ((Math.abs(positionX - game.player.position.x)) < game.player.width && positionY >= (game.player.position.y - game.player.height)) { gameOver() }
     })
 }
 
@@ -60,6 +60,9 @@ function gameOver() {
 
 function checkIfPlayerIsOnTheRoad() {
     if (game.player.position.x > game.road.rightBorder || game.player.position.x < game.road.leftBorder) {
+        if (game.player.warnings === 3) {
+            gameOver()
+        }
         game.player.warnings++
         alert("This is " + game.player.warnings + " warning that You are getting off the road. After 3rd warning game is over!")
         if (game.player.warnings === 4) {
@@ -75,7 +78,7 @@ function pushCars() {
 
 function spawnCar() {
     let cars = document.querySelectorAll('.car')
-    if (cars.length < 2) {
+    if (cars.length < 1) {
         let car = document.createElement('div')
         let color = "car" + Math.round(Math.max(1, (Math.random() * game.cars.amountOfClasses)))
         car.classList.add('car')
@@ -91,9 +94,12 @@ function spawnCar() {
 
 function drawPlayer() {
     player = document.querySelector('.playerNode')
-    player.style.left = game.player.position.x + "px"
-    player.style.top = game.player.position.y + "px"
-    console.log(game.player.position.x)
+    if (player !== null) {
+        player.style.left = game.player.position.x + "px"
+        player.style.top = game.player.position.y + "px"
+        console.log(game.player.position.x)
+        checkIfPlayerIsOnTheRoad()
+    }
 }
 
 function move(input) {
