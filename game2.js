@@ -9,8 +9,11 @@ let game = {
         width: 40,
         height: 80,
         score: 0,
+        warnings: 0,
     },
     road: {
+        leftBorder: 710,
+        rightBorder: 1240,
         mapBorderLeft: 0,
         mapBorderRight: 0,
         mapBorderTop: 0,
@@ -32,32 +35,65 @@ let game = {
 computeStartPositions()
 spawnPlayer()
 spawnCar()
-setInterval(pushCars, 6)
-setInterval(spawnCar, 750)
+let moveCars = setInterval(pushCars, 500)
+let newCars = setInterval(spawnCar, 5000)
 window.addEventListener('keydown', function (event) { move(event) })
+
+function detectCollision() {
+    let cars = document.querySelectorAll('.car')
+    cars.forEach(car => {
+        let positionX = parseInt(car.style.left)
+        let positionY = parseInt(car.style.top)
+        console.log(positionX + " " + positionY)
+        console.log(game.player.position)
+        console.log((positionX - game.player.position.x - game.player.width / 2) + " < " + game.player.width)
+        if ((positionX - game.player.position.x - game.player.width / 2) < game.player.width && positionY >= (game.player.position.y + game.player.height)) { gameOver() }
+    })
+}
+
+function gameOver() {
+    clearInterval(newCars)
+    clearInterval(moveCars)
+    player = document.querySelector('.playerNode')
+    player.parentElement.removeChild(player)
+}
+
+function checkIfPlayerIsOnTheRoad() {
+    if (game.player.position.x > game.road.rightBorder || game.player.position.x < game.road.leftBorder) {
+        game.player.warnings++
+        alert("This is " + game.player.warnings + " warning that You are getting off the road. After 3rd warning game is over!")
+        if (game.player.warnings === 4) {
+            gameOver()
+        }
+    }
+}
 
 function pushCars() {
     let cars = document.querySelectorAll('.car')
-    cars.forEach(car => { if (parseInt(car.style.top) <= game.road.borderBottom) { car.style.top = parseInt(car.style.top) + game.cars.speed + "px" } else { car.parentElement.removeChild(car); game.player.score++ } })
+    cars.forEach(car => { if (parseInt(car.style.top) <= game.road.borderBottom) { car.style.top = parseInt(car.style.top) + game.cars.speed + "px"; detectCollision() } else { car.parentElement.removeChild(car); game.player.score++ } })
 }
 
 function spawnCar() {
-    let car = document.createElement('div')
-    let color = "car" + Math.round(Math.max(1, (Math.random() * game.cars.amountOfClasses)))
-    car.classList.add('car')
-    car.classList.add(color)
-    let lORr = Math.random()
-    if (lORr >= 0.5) { lORr = -1 } else { lORr = 1 }
-    let place = lORr * Math.random() * game.road.width
-    car.style.left = game.player.startPosition.x + place + "px"
-    car.style.top = game.road.borderTop + "px"
-    gameBoard.appendChild(car)
+    let cars = document.querySelectorAll('.car')
+    if (cars.length < 2) {
+        let car = document.createElement('div')
+        let color = "car" + Math.round(Math.max(1, (Math.random() * game.cars.amountOfClasses)))
+        car.classList.add('car')
+        car.classList.add(color)
+        let lORr = Math.random()
+        if (lORr >= 0.5) { lORr = -1 } else { lORr = 1 }
+        let place = lORr * Math.random() * game.road.width
+        car.style.left = game.player.startPosition.x + place + "px"
+        car.style.top = game.road.borderTop + "px"
+        gameBoard.appendChild(car)
+    }
 }
 
 function drawPlayer() {
     player = document.querySelector('.playerNode')
     player.style.left = game.player.position.x + "px"
     player.style.top = game.player.position.y + "px"
+    console.log(game.player.position.x)
 }
 
 function move(input) {
